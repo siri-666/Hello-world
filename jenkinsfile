@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('create a war file') {
+            steps{
+          sh '''
+            mvn clean package
+            mv target/*war myapp.war
+          '''
+        }
+        }
+        stage('Building image') {
+            steps {
+            sh '''
+                docker build -t javaapp:v$BUILD_NUMBER .
+            '''
+            }
+        }
+        stage('deplo to docker container') {
+            steps {
+            sh '''
+                docker run -d -p 8081:8080 javaapp:v$BUILD_NUMBER
+            '''
+            }
+        }
+        
+        }
+}
