@@ -6,7 +6,6 @@ pipeline {
             steps{
           sh '''
             mvn clean package
-            // mv webapp/target/*war myapp.war
           '''
         }
         }
