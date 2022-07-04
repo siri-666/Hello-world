@@ -6,7 +6,6 @@ pipeline {
             steps{
           sh '''
             mvn clean package
-            mv webapp/target/*war myapp.war
           '''
         }
         }
@@ -20,6 +19,7 @@ pipeline {
         stage('deplo to docker container') {
             steps {
             sh '''
+                docker rm -rf (ps -a -q)
                 docker run -d -p 8081:8080 javaapp:v$BUILD_NUMBER
             '''
             }
